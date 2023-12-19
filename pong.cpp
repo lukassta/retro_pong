@@ -8,11 +8,16 @@ int input;
 int w = 30;
 int h = 20;
 
-float ballX = 0;
+float ballX = 10;
 float ballY = 5;
+
+int angle = 45;
+float speed = 0.01;
 
 void physics_thread(){
     while(true){
+        ballX+=cos(angle*3.14159/180)*speed;
+        ballY+=sin(angle*3.14159/180)*speed;
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
