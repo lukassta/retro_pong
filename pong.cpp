@@ -3,12 +3,21 @@
 #include <thread>
 #include <chrono>
 
-int w = 30;
-int h = 20;
 int input;
 
-void input_thread()
-{
+int w = 30;
+int h = 20;
+
+float ballX = 0;
+float ballY = 5;
+
+void physics_thread(){
+    while(true){
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+}
+
+void input_thread(){
     while(true){
         system("stty raw");
         input = getchar(); 
@@ -19,14 +28,14 @@ void input_thread()
     }
 }
 
-void render(int ballX, int ballY){
+void render(int ballXCoordinate, int ballYCoordinate){
     char air = '.';
 
     system("clear");
     for(int y = 0; y < h; y++){
         std::cout << "\r";
         for(int x = 0; x < w; x++){
-            if(x == round(ballX) && y == round(ballY)) std::cout << "()";
+            if(x == round(ballXCoordinate) && y == round(ballYCoordinate)) std::cout << "()";
             else std::cout << air << air;
         }
         std::cout << "\n";
@@ -35,8 +44,10 @@ void render(int ballX, int ballY){
 
 int main(){
     std::thread input_t(&input_thread);
+    std::thread physics_t(&physics_thread);
+
     while(true) {
-        render(5,5);
+        render(ballX,ballY);
     }
     return 0;
 }
