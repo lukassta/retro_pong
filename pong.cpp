@@ -1,13 +1,16 @@
 #include <iostream>
+#include <cmath>
 
 int w = 30;
 int h = 20;
+char air = '.';
 
-void render(){
+void render(int ballX, int ballY){
     system("clear");
-    for(int i = 0; i < h; i++){
-        for(int j = 0; j < w; j++){
-            std::cout << "..";
+    for(int y = 0; y < h; y++){
+        for(int x = 0; x < w; x++){
+            if(x == round(ballX) && y == round(ballY)) std::cout << "()";
+            else std::cout << air << air;
         }
         std::cout << "\n";
     }
@@ -15,7 +18,7 @@ void render(){
 
 int main(){
     while(true) {
-        render();
+        render(5,5);
     }
     return 0;
 }
