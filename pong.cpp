@@ -18,6 +18,27 @@ void physics_thread(){
     while(true){
         ballX+=cos(angle*3.14159/180)*speed;
         ballY+=sin(angle*3.14159/180)*speed;
+        
+        if(ballX < 0){
+            ballX = -ballX;
+            angle = angle/180*180+abs(180 - angle%180);
+        }
+        else if(w < ballX){
+            ballX = 2*w-ballX;
+            angle = angle/180*180+abs(180 - angle%180);
+        }
+
+        if(ballY < 0){
+            ballY = -ballY;
+            angle = 360 - angle;
+        }
+        else if(h < ballY){
+            ballY = 2*h-ballY;
+            angle = 360 - angle;
+        }
+
+        
+
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
