@@ -3,6 +3,11 @@
 #include <thread>
 #include <chrono>
 
+int gameMode;
+// 0 - training
+// 1 - pve
+// 2 - pvp
+
 int input;
 
 int w = 30;
@@ -33,15 +38,11 @@ void physics_thread(){
             angle = 360 - angle;
         }
 
-        if( 1 <= ballX && ballX <= 2 && playerY <= ballY && ballY <= playerY + playerH){
+        if(1 <= ballX && ballX <= 2 && playerY <= ballY && ballY <= playerY + playerH){
             angle = angle/180*180+abs(180 - angle%180);
         }
 
-        if(ballX < 0){
-            ballX = -ballX;
-            angle = angle/180*180+abs(180 - angle%180);
-        }
-        else if(w < ballX){
+        if(w < ballX){
             ballX = 2*w-ballX;
             angle = angle/180*180+abs(180 - angle%180);
         }
