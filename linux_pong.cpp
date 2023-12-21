@@ -4,19 +4,23 @@
 #include <chrono>
 
 int input;
+bool paused = false;
 
 void input_thread(){
     while(true){
         system("stty raw");
         input = getchar(); 
-        if(input == 27) {
+        if(input == 112) paused = true;
+        if(input == 111) paused = false;
+        if(input == 27 || input == 113) {
             system("stty cooked");
+            system("clear");
             exit(0);
         }  
     }
 }
 
-void render(bool isPaused, int screenWidth, int screenHeight, float ballXCoordinate, float ballYCoordinate, float playerYCoordinate, int playerHeight){
+void render(int screenWidth, int screenHeight, float ballXCoordinate, float ballYCoordinate, float playerYCoordinate, int playerHeight){
     std::string pausedGraphic = "[Paused]";
 
     system("clear");
@@ -24,7 +28,7 @@ void render(bool isPaused, int screenWidth, int screenHeight, float ballXCoordin
     for(int y = 0; y < screenHeight; y++){
         std::cout << "\r";
         for(int x = 0; x < screenWidth; x++){
-            if(isPaused && y == screenHeight/2 && screenWidth/2-2 <= x && x <= screenWidth/2+1 ) std::cout << pausedGraphic[(x-screenWidth/2+2)*2] << pausedGraphic[(x-screenWidth/2+2)*2+1];
+            if(paused && y == screenHeight/2 && screenWidth/2-2 <= x && x <= screenWidth/2+1 ) std::cout << pausedGraphic[(x-screenWidth/2+2)*2] << pausedGraphic[(x-screenWidth/2+2)*2+1];
             else if(x == 1 && playerYCoordinate <= y && y <= playerYCoordinate + playerHeight) std::cout << "[]";
             else if(x == round(ballXCoordinate) && y == round(ballYCoordinate)) std::cout << "()";
             else std::cout << "..";
@@ -42,8 +46,6 @@ int main(){
     // 2 - pve
     // 3 - pvp
 
-    bool paused = false;
-
     int w = 30;
     int h = 20;
 
@@ -60,7 +62,7 @@ int main(){
 
     while(true){
         if(paused){
-            render(paused, w, h, ballX, ballY, playerY, playerH);
+            render(w, h, ballX, ballY, playerY, playerH);
             continue;
         }
 
@@ -88,7 +90,7 @@ int main(){
             angle = angle/180*180+abs(180 - angle%180);
         }
 
-        render(paused, w, h, ballX, ballY, playerY, playerH);
+        render(w, h, ballX, ballY, playerY, playerH);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
