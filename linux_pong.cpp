@@ -4,9 +4,10 @@
 #include <chrono>
 
 int gameMode;
-// 0 - training
-// 1 - pve
-// 2 - pvp
+// 0 - menu screen
+// 1 - training
+// 2 - pve
+// 3 - pvp
 
 int input;
 
