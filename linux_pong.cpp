@@ -74,8 +74,8 @@ int main(){
             ballY = -ballY;
             angle = 360 - angle;
         }
-        else if(h < ballY){
-            ballY = 2*h-ballY;
+        else if(h-1 < ballY){
+            ballY = 2*(h-1)-ballY;
             angle = 360 - angle;
         }
 
@@ -83,8 +83,8 @@ int main(){
             angle = angle/180*180+abs(180 - angle%180);
         }
 
-        if(w < ballX){
-            ballX = 2*w-ballX;
+        if(w-1 < ballX){
+            ballX = 2*(w-1)-ballX;
             angle = angle/180*180+abs(180 - angle%180);
         }
 
