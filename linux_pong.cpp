@@ -17,15 +17,17 @@ void input_thread(){
 }
 
 void render(bool isPaused, int screenWidth, int screenHeight, float ballXCoordinate, float ballYCoordinate, float playerYCoordinate, int playerHeight){
-    char air = '.';
+    std::string pausedGraphic = "[Paused]";
 
     system("clear");
+
     for(int y = 0; y < screenHeight; y++){
         std::cout << "\r";
         for(int x = 0; x < screenWidth; x++){
-            if(x == 1 && playerYCoordinate <= y && y <= playerYCoordinate + playerHeight) std::cout << "[]";
+            if(isPaused && y == screenHeight/2 && screenWidth/2-2 <= x && x <= screenWidth/2+1 ) std::cout << pausedGraphic[(x-screenWidth/2+2)*2] << pausedGraphic[(x-screenWidth/2+2)*2+1];
+            else if(x == 1 && playerYCoordinate <= y && y <= playerYCoordinate + playerHeight) std::cout << "[]";
             else if(x == round(ballXCoordinate) && y == round(ballYCoordinate)) std::cout << "()";
-            else std::cout << air << air;
+            else std::cout << "..";
         }
         std::cout << "\n";
     }
