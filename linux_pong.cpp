@@ -37,31 +37,82 @@ void render(int screenWidth, int screenHeight, float ballXCoordinate, float ball
     }
 }
 
+
+void render(int state){
+    system("clear");
+    std::cout << " ";
+    if(state == 0) std::cout << "menu";
+
+    if(state == 4) std::cout << "You won";
+    if(state == 5) std::cout << "You lost";
+    if(state == 6) std::cout << "P1 won";
+    if(state == 7) std::cout << "P2 won";
+
+    return;
+}
+
+void restartGameData(int w, int h, float* speed, float* ballX, float* ballY, int playerH, float* playerY, int* angle){
+    *ballX = w/(float)2;
+    *ballY = h/(float)2;
+
+    *speed = 0.1;
+    *angle = 180;
+    
+    *playerY = h/(float)2 - playerH/(float)2;
+}
+
 int main(){
     std::thread input_t(&input_thread);
 
-    int gameMode;
+    int gameState = 0;
     // 0 - menu screen
     // 1 - training
     // 2 - pve
     // 3 - pvp
+    // 4 - you won
+    // 5 - you lost
+    // 6 - player 1 won
+    // 7 - player 2 won
 
     int w = 30;
     int h = 20;
 
-    float ballX = w/2.0;
-    float ballY = h/2.0;
+    float ballX, ballY;
+    int angle;
+    float speed;
 
+    float playerY;
     int playerH = 5;
-    float playerY = 2;
+    
     float playerSpeed = 0.05;
 
 
-    int angle = 45;
-    float speed = 0.1;
+    restartGameData(w, h, &speed, &ballX, &ballY, playerH, &playerY, &angle);
 
     while(true){
-        if(paused){
+        if(gameState == 0){
+            render(gameState);
+            if(input == 49){
+                restartGameData(w, h, &speed, &ballX, &ballY, playerH, &playerY, &angle);
+                gameState = 1;
+            }
+            if(input == 50){
+                restartGameData(w, h, &speed, &ballX, &ballY, playerH, &playerY, &angle);
+                gameState = 2;
+            }
+            if(input == 51){
+                restartGameData(w, h, &speed, &ballX, &ballY, playerH, &playerY, &angle);
+                gameState = 3;
+            }
+            continue;
+        }
+        else if(4 <= gameState){
+            render(gameState);
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            gameState = 0;
+            continue;
+        }
+        else if(paused){
             render(w, h, ballX, ballY, playerY, playerH);
             continue;
         }
@@ -84,11 +135,14 @@ int main(){
         if(1 <= ballX && ballX <= 2 && playerY <= ballY && ballY <= playerY + playerH){
             angle = angle/180*180+abs(180 - angle%180);
         }
-
-        if(w-1 < ballX){
-            ballX = 2*(w-1)-ballX;
-            angle = angle/180*180+abs(180 - angle%180);
+        if(gameState == 1){
+            if(ballX < 0)gameState = 0;
+            if(w-1 < ballX){
+                ballX = 2*(w-1)-ballX;
+                angle = angle/180*180+abs(180 - angle%180);
+            }
         }
+        
 
         render(w, h, ballX, ballY, playerY, playerH);
 
