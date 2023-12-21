@@ -3,30 +3,7 @@
 #include <thread>
 #include <chrono>
 
-int gameMode;
-// 0 - menu screen
-// 1 - training
-// 2 - pve
-// 3 - pvp
-
-bool paused = false;
-
 int input;
-
-int w = 30;
-int h = 20;
-
-float ballX = w/2.0;
-float ballY = h/2.0;
-
-int playerH = 5;
-float playerY = 2;
-float playerSpeed = 0.05;
-
-
-int angle = 45;
-float speed = 0.1;
-
 
 void input_thread(){
     while(true){
@@ -39,14 +16,14 @@ void input_thread(){
     }
 }
 
-void render(int ballXCoordinate, int ballYCoordinate){
+void render(bool isPaused, int screenWidth, int screenHeight, float ballXCoordinate, float ballYCoordinate, float playerYCoordinate, int playerHeight){
     char air = '.';
 
     system("clear");
-    for(int y = 0; y < h; y++){
+    for(int y = 0; y < screenHeight; y++){
         std::cout << "\r";
-        for(int x = 0; x < w; x++){
-            if(x == 1 && playerY <= y && y <= playerY + playerH) std::cout << "[]";
+        for(int x = 0; x < screenWidth; x++){
+            if(x == 1 && playerYCoordinate <= y && y <= playerYCoordinate + playerHeight) std::cout << "[]";
             else if(x == round(ballXCoordinate) && y == round(ballYCoordinate)) std::cout << "()";
             else std::cout << air << air;
         }
@@ -57,9 +34,31 @@ void render(int ballXCoordinate, int ballYCoordinate){
 int main(){
     std::thread input_t(&input_thread);
 
+    int gameMode;
+    // 0 - menu screen
+    // 1 - training
+    // 2 - pve
+    // 3 - pvp
+
+    bool paused = false;
+
+    int w = 30;
+    int h = 20;
+
+    float ballX = w/2.0;
+    float ballY = h/2.0;
+
+    int playerH = 5;
+    float playerY = 2;
+    float playerSpeed = 0.05;
+
+
+    int angle = 45;
+    float speed = 0.1;
+
     while(true){
         if(paused){
-            render(ballX,ballY);
+            render(paused, w, h, ballX, ballY, playerY, playerH);
             continue;
         }
 
@@ -87,7 +86,7 @@ int main(){
             angle = angle/180*180+abs(180 - angle%180);
         }
 
-        render(ballX,ballY);
+        render(paused, w, h, ballX, ballY, playerY, playerH);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
