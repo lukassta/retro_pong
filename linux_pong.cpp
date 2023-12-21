@@ -30,7 +30,10 @@ float speed = 0.1;
 void physics_thread(){
     while(true){
         if(paused) continue;
-        
+
+        if(input == 100 && playerY + playerH <= h-1) playerY += playerSpeed;
+        if(input == 97  && playerY >= 0) playerY -= playerSpeed;
+
         ballX+=cos(angle*3.14159/180)*speed;
         ballY+=sin(angle*3.14159/180)*speed;
 
@@ -87,9 +90,6 @@ int main(){
     std::thread physics_t(&physics_thread);
 
     while(true) {
-        if(input == 100 && playerY + playerH <= h-1) playerY += playerSpeed;
-        if(input == 97  && playerY >= 0) playerY -= playerSpeed;
-        
         render(ballX,ballY);
     }
     return 0;
