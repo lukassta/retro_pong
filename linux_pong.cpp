@@ -9,6 +9,8 @@ int gameMode;
 // 2 - pve
 // 3 - pvp
 
+bool paused = false;
+
 int input;
 
 int w = 30;
@@ -27,6 +29,8 @@ float speed = 0.1;
 
 void physics_thread(){
     while(true){
+        if(paused) continue;
+        
         ballX+=cos(angle*3.14159/180)*speed;
         ballY+=sin(angle*3.14159/180)*speed;
 
