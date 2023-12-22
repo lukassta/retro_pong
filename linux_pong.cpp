@@ -102,7 +102,7 @@ void render(int state, int screenWidth, int screenHeight){
     else graphics = {""};
 
     system("clear");
-    
+
     std::cout << "\r._";
     for(int x = 1; x < screenWidth+3; x++) std::cout << "__";
     std::cout << "_.\n";
@@ -122,12 +122,6 @@ void render(int state, int screenWidth, int screenHeight){
                           << graphics[y-screenHeight/2+graphics.size()/2][(x+graphics[0].size()/4- screenWidth/2)*2+1];
                         //   std::cout << y-screenHeight/2+graphics.size()/2 << " "<<(x+graphics[0].size()/4- screenWidth/2)*2 << " ";
             else std::cout << "  ";
-            // if(state == 0) std::cout << "menu";
-
-            // if(state == 4) std::cout << "You won";
-            // if(state == 5) std::cout << "You lost";
-            // if(state == 6) std::cout << "P1 won";
-            // if(state == 7) std::cout << "P2 won";
         }
         std::cout << " | |\n";
     }
@@ -172,6 +166,7 @@ int main(){
     float ballX, ballY;
     int angle;
     float speed;
+    float acceleration = 0.1;
 
     float playerY;
     int playerH = 5;
@@ -228,6 +223,7 @@ int main(){
 
         if(1 <= ballX && ballX <= 2 && playerY <= ballY && ballY <= playerY + playerH){
             angle = angle/180*180+abs(180 - angle%180);
+            speed += acceleration;
         }
 
         //Training
