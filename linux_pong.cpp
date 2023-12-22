@@ -13,7 +13,7 @@ void input_thread(){
         input = getchar(); 
         if(input == 112) paused = true;
         if(input == 111) paused = false;
-        if(input == 27 || input == 113) {
+        if(input == 27) {
             system("stty cooked");
             system("clear");
             exit(0);
@@ -204,7 +204,10 @@ int main(){
             render(w, h, ballX, ballY, playerY, playerH);
             continue;
         }
-
+        if(input == 113){
+            gameState = 0;
+            continue;
+        }
         if(input == 100 && playerY + playerH <= h-1) playerY += playerSpeed;
         if(input == 97  && playerY >= 0) playerY -= playerSpeed;
 
