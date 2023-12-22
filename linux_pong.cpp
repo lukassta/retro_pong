@@ -174,7 +174,7 @@ int main(){
     float paddleOneY, paddleTwoY;
     int paddleH = 5;
     
-    float playerSpeed = 0.05;
+    float paddleSpeed = 0.05;
 
 
     restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
@@ -214,8 +214,8 @@ int main(){
             continue;
         }
         
-        if(input == 100 && paddleOneY + paddleH <= h-1) paddleOneY += playerSpeed;
-        if(input == 97  && paddleOneY >= 0) paddleOneY -= playerSpeed;
+        if(input == 100 && paddleOneY + paddleH <= h-1) paddleOneY += paddleSpeed;
+        if(input == 97  && paddleOneY >= 0) paddleOneY -= paddleSpeed;
 
         ballX+=cos(angle*3.14159/180)*speed;
         ballY+=sin(angle*3.14159/180)*speed;
@@ -256,6 +256,10 @@ int main(){
         if(gameState == 2){
             if(ballX < 0)   gameState = 5;
             if(w-1 < ballX) gameState = 4;
+
+            if(paddleTwoY+paddleH/2.0 < ballY)      paddleTwoY += paddleSpeed;
+            else if(paddleTwoY+paddleH/2.0 > ballY) paddleTwoY -= paddleSpeed;
+            else;
         }
         //PvP
         if(gameState == 3){
