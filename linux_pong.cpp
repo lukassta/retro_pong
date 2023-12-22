@@ -27,15 +27,15 @@ void render(int state, int screenWidth, int screenHeight, float ballXCoordinate,
     system("clear");
 
     std::cout << "\r._";
-    for(int x = 1; x < screenWidth+3; x++) std::cout << "__";
+    for(int x = 1; x < screenWidth+2; x++) std::cout << "__";
     std::cout << "_.\n";
 
     std::cout << "\r| ._";
-    for(int x = 2; x < screenWidth+2; x++) std::cout << "__";
+    for(int x = 2; x < screenWidth+1; x++) std::cout << "__";
     std::cout << "_. |\n";
 
     for(int y = 0; y < screenHeight; y++){
-        std::cout << "\r| | ";
+        std::cout << "\r| |";
         for(int x = 0; x < screenWidth; x++){
             if(paused && y == screenHeight/2 && screenWidth/2-2 <= x && x <= screenWidth/2+1 ) std::cout << pausedGraphic[(x-screenWidth/2+2)*2] << pausedGraphic[(x-screenWidth/2+2)*2+1];
             else if(x == 1 && paddleOneYCoordinate <= y && y <= paddleOneYCoordinate + paddleHeight) std::cout << "[]";
@@ -43,15 +43,15 @@ void render(int state, int screenWidth, int screenHeight, float ballXCoordinate,
             else if(x == round(ballXCoordinate) && y == round(ballYCoordinate)) std::cout << "()";
             else std::cout << "  ";
         }
-        std::cout << " | |\n";
+        std::cout << "| |\n";
     }
 
     std::cout << "\r| ._";
-    for(int x = 2; x < screenWidth+2; x++) std::cout << "__";
+    for(int x = 2; x < screenWidth+1; x++) std::cout << "__";
     std::cout << "_. |\n";
 
     std::cout << "\r._";
-    for(int x = 1; x < screenWidth+3; x++) std::cout << "__";
+    for(int x = 1; x < screenWidth+2; x++) std::cout << "__";
     std::cout << "_.\n";
 
     return;
@@ -105,16 +105,16 @@ void render(int state, int screenWidth, int screenHeight){
     system("clear");
 
     std::cout << "\r._";
-    for(int x = 1; x < screenWidth+3; x++) std::cout << "__";
+    for(int x = 1; x < screenWidth+2; x++) std::cout << "__";
     std::cout << "_.\n";
 
     std::cout << "\r| ._";
-    for(int x = 2; x < screenWidth+2; x++) std::cout << "__";
+    for(int x = 2; x < screenWidth+1; x++) std::cout << "__";
     std::cout << "_. |\n";
 
     
     for(int y = 0; y < screenHeight; y++){
-        std::cout << "\r| | ";
+        std::cout << "\r| |";
         
         for(int x = 0; x < screenWidth; x++){
             if( screenHeight/2-graphics.size()/2 <= y   && y < screenHeight/2+graphics.size()/2 &&
@@ -124,15 +124,15 @@ void render(int state, int screenWidth, int screenHeight){
                         //   std::cout << y-screenHeight/2+graphics.size()/2 << " "<<(x+graphics[0].size()/4- screenWidth/2)*2 << " ";
             else std::cout << "  ";
         }
-        std::cout << " | |\n";
+        std::cout << "| |\n";
     }
 
     std::cout << "\r| ._";
-    for(int x = 2; x < screenWidth+2; x++) std::cout << "__";
+    for(int x = 2; x < screenWidth+1; x++) std::cout << "__";
     std::cout << "_. |\n";
 
     std::cout << "\r._";
-    for(int x = 1; x < screenWidth+3; x++) std::cout << "__";
+    for(int x = 1; x < screenWidth+2; x++) std::cout << "__";
     std::cout << "_.\n";
 
     return;
