@@ -5,14 +5,11 @@
 #include <vector>
 
 int input;
-bool paused = false;
 
 void input_thread(){
     while(true){
         system("stty raw");
         input = getchar(); 
-        if(input == 112) paused = true;
-        if(input == 111) paused = false;
         if(input == 27) {
             system("stty cooked");
             system("clear");
@@ -21,7 +18,7 @@ void input_thread(){
     }
 }
 
-void render(int state, int screenWidth, int screenHeight, float ballXCoordinate, float ballYCoordinate, float paddleOneYCoordinate, float paddleTwoYCoordinate, int paddleHeight){
+void render(int state, bool paused, int screenWidth, int screenHeight, float ballXCoordinate, float ballYCoordinate, float paddleOneYCoordinate, float paddleTwoYCoordinate, int paddleHeight){
     std::string pausedGraphic = "[Paused]";
 
     system("clear");
@@ -138,7 +135,7 @@ void render(int state, int screenWidth, int screenHeight){
     return;
 }
 
-void restartGameData(int w, int h, float* speed, float* ballX, float* ballY, int paddleH, float* paddleOneY, float* paddleTwoY, int* angle){
+void restartGameData(bool* paused, int w, int h, float* speed, float* ballX, float* ballY, int paddleH, float* paddleOneY, float* paddleTwoY, int* angle){
     *ballX = w/(float)2;
     *ballY = h/(float)2;
 
@@ -147,6 +144,8 @@ void restartGameData(int w, int h, float* speed, float* ballX, float* ballY, int
 
     *paddleOneY = h/(float)2 - paddleH/(float)2;
     *paddleTwoY = h/(float)2 - paddleH/(float)2;
+
+    *paused = false;
 }
 
 int main(){
@@ -162,6 +161,8 @@ int main(){
     // 6 - player 1 won
     // 7 - player 2 won
 
+    bool paused = false;
+
     int w = 30;
     int h = 20;
 
@@ -176,21 +177,27 @@ int main(){
     float playerSpeed = 0.05;
 
 
-    restartGameData(w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
+    restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
 
     while(true){
+        if(input == 112) paused = true;
+        if(input == 111) paused = false;
+        if(input == 113 && gameState != 0){
+            gameState = 0;
+            continue;
+        }
         if(gameState == 0){
             render(gameState, w, h);
             if(input == 49){
-                restartGameData(w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
+                restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
                 gameState = 1;
             }
             if(input == 50){
-                restartGameData(w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
+                restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
                 gameState = 2;
             }
             if(input == 51){
-                restartGameData(w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
+                restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
                 gameState = 3;
             }
             continue;
@@ -203,13 +210,10 @@ int main(){
             continue;
         }
         else if(paused){
-            render(gameState, w, h, ballX, ballY, paddleOneY, paddleTwoY, paddleH);
+            render(gameState, paused, w, h, ballX, ballY, paddleOneY, paddleTwoY, paddleH);
             continue;
         }
-        if(input == 113){
-            gameState = 0;
-            continue;
-        }
+        
         if(input == 100 && paddleOneY + paddleH <= h-1) paddleOneY += playerSpeed;
         if(input == 97  && paddleOneY >= 0) paddleOneY -= playerSpeed;
 
@@ -259,7 +263,7 @@ int main(){
             if(w-1 < ballX) gameState = 6;
         }
         
-        render(gameState, w, h, ballX, ballY, paddleOneY, paddleTwoY, paddleH);
+        render(gameState, paused, w, h, ballX, ballY, paddleOneY, paddleTwoY, paddleH);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
