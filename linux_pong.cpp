@@ -30,24 +30,24 @@ void render(int screenWidth, int screenHeight, float ballXCoordinate, float ball
     for(int x = 1; x < screenWidth+3; x++) std::cout << "__";
     std::cout << "_.\n";
 
-    std::cout << "\r|  _";
+    std::cout << "\r| ._";
     for(int x = 2; x < screenWidth+2; x++) std::cout << "__";
-    std::cout << "_  |\n";
+    std::cout << "_. |\n";
 
     for(int y = 0; y < screenHeight; y++){
-        std::cout << "\r| |.";
+        std::cout << "\r| | ";
         for(int x = 0; x < screenWidth; x++){
             if(paused && y == screenHeight/2 && screenWidth/2-2 <= x && x <= screenWidth/2+1 ) std::cout << pausedGraphic[(x-screenWidth/2+2)*2] << pausedGraphic[(x-screenWidth/2+2)*2+1];
             else if(x == 1 && playerYCoordinate <= y && y <= playerYCoordinate + playerHeight) std::cout << "[]";
             else if(x == round(ballXCoordinate) && y == round(ballYCoordinate)) std::cout << "()";
             else std::cout << "  ";
         }
-        std::cout << ".| |\n";
+        std::cout << " | |\n";
     }
 
-    std::cout << "\r|  _";
+    std::cout << "\r| ._";
     for(int x = 2; x < screenWidth+2; x++) std::cout << "__";
-    std::cout << "_  |\n";
+    std::cout << "_. |\n";
 
     std::cout << "\r._";
     for(int x = 1; x < screenWidth+3; x++) std::cout << "__";
@@ -102,13 +102,14 @@ void render(int state, int screenWidth, int screenHeight){
     else graphics = {""};
 
     system("clear");
+    
     std::cout << "\r._";
     for(int x = 1; x < screenWidth+3; x++) std::cout << "__";
     std::cout << "_.\n";
 
-    std::cout << "\r|  _";
+    std::cout << "\r| ._";
     for(int x = 2; x < screenWidth+2; x++) std::cout << "__";
-    std::cout << "_  |\n";
+    std::cout << "_. |\n";
 
     
     for(int y = 0; y < screenHeight; y++){
@@ -131,9 +132,9 @@ void render(int state, int screenWidth, int screenHeight){
         std::cout << " | |\n";
     }
 
-    std::cout << "\r|  _";
+    std::cout << "\r| ._";
     for(int x = 2; x < screenWidth+2; x++) std::cout << "__";
-    std::cout << "_  |\n";
+    std::cout << "_. |\n";
 
     std::cout << "\r._";
     for(int x = 1; x < screenWidth+3; x++) std::cout << "__";
