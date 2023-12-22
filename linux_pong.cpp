@@ -222,7 +222,9 @@ int main(){
         }
 
         if(1 <= ballX && ballX <= 2 && playerY <= ballY && ballY <= playerY + playerH){
-            angle = angle/180*180+abs(180 - angle%180);
+            // angle = angle/180*180+abs(180 - angle%180);
+            if(ballY-playerY-playerH/2.0 <= 0) angle = 360+(ballY-playerY-playerH/2.0)/(playerH/2.0)*90;
+            else                               angle = (ballY-playerY-playerH/2.0)/(playerH/2.0)*90;
             speed += acceleration;
         }
 
