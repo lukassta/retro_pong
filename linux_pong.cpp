@@ -202,10 +202,10 @@ int main(){
                 restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
                 gameState = 3;
             }
-            if(input == '4'){
-                restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
-                gameState = 4;
-            }
+            // if(input == '4'){
+            //     restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
+            //     gameState = 4;
+            // }
             continue;
         }
         else if(5 <= gameState){
@@ -294,6 +294,9 @@ int main(){
         if(gameState == 4){
             if(ballX < 0)   gameState = 8;
             if(w-1 < ballX) gameState = 7;
+
+            if(input == 'j'  && paddleTwoY >= 0) paddleTwoY -= paddleSpeed;
+            if(input == 'l' && paddleTwoY + paddleH <= h-1) paddleTwoY += paddleSpeed;
         }
         
         render(gameState, paused, w, h, ballX, ballY, paddleOneY, paddleTwoY, paddleH);
