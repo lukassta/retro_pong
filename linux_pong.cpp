@@ -65,32 +65,32 @@ void render(int state, int screenWidth, int screenHeight){
         "           | |    | |__| | |\\  | |__| |           ",
         "           |_|     \\____/|_| \\_|\\_____|           ",
         "                                                  ",
-        "    Esc-quit    1-training     2-PvE     3-PvP    ",
+        "  Esc-quit  1-training   2-PvE(easy)  3-PvE(hard) ",
         " P1: A-up S-stop D-down    P2: J-up K-stop L-down ",
         "      Q-exit to menu    P-pause    O-unpause      ",
         "            U-updatea width and height            "};
-    else if(state == 4) graphics = {
+    else if(state == 5) graphics = {
         "__     ______  _    _    __          ______  _   _  ",
         "\\ \\   / / __ \\| |  | |   \\ \\        / / __ \\| \\ | | ",
         " \\ \\_/ / |  | | |  | |    \\ \\  /\\  / / |  | |  \\| | ",
         "  \\   /| |  | | |  | |     \\ \\/  \\/ /| |  | | . ` | ",
         "   | | | |__| | |__| |      \\  /\\  / | |__| | |\\  | ",
         "   |_|  \\____/ \\____/        \\/  \\/   \\____/|_| \\_| "};
-    else if(state == 5) graphics = {
+    else if(state == 6) graphics = {
         "__     ______  _    _   _      ____   _____ _______ ",
         "\\ \\   / / __ \\| |  | | | |    / __ \\ / ____|__   __|",
         " \\ \\_/ / |  | | |  | | | |   | |  | | (___    | |   ",
         "  \\   /| |  | | |  | | | |   | |  | |\\___ \\   | |   ",
         "   | | | |__| | |__| | | |___| |__| |____) |  | |   ",
         "   |_|  \\____/ \\____/  |______\\____/|_____/   |_|   "};
-    else if(state == 6) graphics = {
+    else if(state == 7) graphics = {
         " _____  __    __          ______  _   _ ",
         "|  __ \\/_ |   \\ \\        / / __ \\| \\ | |",
         "| |__) || |    \\ \\  /\\  / / |  | |  \\| |",
         "|  ___/ | |     \\ \\/  \\/ /| |  | | . ` |",
         "| |     | |      \\  /\\  / | |__| | |\\  |",
         "|_|     |_|       \\/  \\/   \\____/|_| \\_|"};
-    else if(state == 7) graphics = {
+    else if(state == 8) graphics = {
         " _____ ___    __          ______  _   _ ",
         "|  __ \\__ \\   \\ \\        / / __ \\| \\ | |",
         "| |__) | ) |   \\ \\  /\\  / / |  | |  \\| |",
@@ -154,12 +154,13 @@ int main(){
     int gameState = 0;
     // 0 - menu screen
     // 1 - training
-    // 2 - PvE
-    // 3 - PvP
-    // 4 - you won
-    // 5 - you lost
-    // 6 - player 1 won
-    // 7 - player 2 won
+    // 2 - PvE (easy)
+    // 3 - PvE (hard)
+    // 4 - PvP
+    // 5 - you won
+    // 6 - you lost
+    // 7 - player 1 won
+    // 8 - player 2 won
 
     bool paused = false;
 
@@ -176,6 +177,7 @@ int main(){
     
     float paddleSpeed = 0.05;
 
+    float hardBotTarget = 0;
 
     restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
 
@@ -200,9 +202,13 @@ int main(){
                 restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
                 gameState = 3;
             }
+            if(input == 52){
+                restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
+                gameState = 4;
+            }
             continue;
         }
-        else if(4 <= gameState){
+        else if(5 <= gameState){
             render(gameState, w, h);
             std::this_thread::sleep_for(std::chrono::milliseconds(2000));
             gameState = 0;
@@ -231,9 +237,15 @@ int main(){
 
         if(1 <= ballX && ballX <= 2 && paddleOneY <= ballY && ballY <= paddleOneY + paddleH){
             // angle = angle/180*180+abs(180 - angle%180);
-            if(ballY-paddleOneY-paddleH/2.0 <= 0) angle = 360+round((ballY-paddleOneY-paddleH/2.0)/(paddleH/2.0)*90);
+            if(ballY-paddleOneY-paddleH/2.0 < 0) angle = 360+round((ballY-paddleOneY-paddleH/2.0)/(paddleH/2.0)*90);
             else                               angle = round((ballY-paddleOneY-paddleH/2.0)/(paddleH/2.0)*90);
             speed += acceleration;
+
+            if(gameState == 3){
+                float temp = ballY+tan(angle*3.14159/180)*(w-4);
+                if((int)round(temp)/h%2) hardBotTarget = h-abs(((temp)-(int)round(temp)/h*h));
+                else                     hardBotTarget = abs(((temp)-(int)round(temp)/h*h));
+            }
         }
 
         if(gameState != 1 && w-3 <= ballX && ballX <= w-2 && paddleTwoY <= ballY && ballY <= paddleTwoY + paddleH){
@@ -241,6 +253,8 @@ int main(){
             angle = 180-round((ballY-paddleTwoY-paddleH/2.0)/(paddleH/2.0)*90);
 
             speed += acceleration;
+
+            if(gameState == 3) hardBotTarget = h/2;
         }
 
         //Training
@@ -252,19 +266,34 @@ int main(){
             }
         }
         
-        //PvE
+        //PvE(easy)
         if(gameState == 2){
-            if(ballX < 0)   gameState = 5;
-            if(w-1 < ballX) gameState = 4;
+            if(ballX < 0)   gameState = 4;
+            if(w-1 < ballX) gameState = 5;
 
             if(paddleTwoY+paddleH/2.0 < ballY)      paddleTwoY += paddleSpeed;
             else if(paddleTwoY+paddleH/2.0 > ballY) paddleTwoY -= paddleSpeed;
             else;
         }
-        //PvP
+
+        //PvE(hard)
         if(gameState == 3){
-            if(ballX < 0)   gameState = 7;
-            if(w-1 < ballX) gameState = 6;
+            if(ballX < 0)   gameState = 4;
+            if(w-1 < ballX) gameState = 5;
+            if(90 <= angle && angle <= 270){
+                if(paddleTwoY+paddleH/2.0 < h/2.0)      paddleTwoY += paddleSpeed;
+                else if(paddleTwoY+paddleH/2.0 > h/2.0) paddleTwoY -= paddleSpeed;
+            }
+            else{
+                if(paddleTwoY+paddleH/2.0 < hardBotTarget)      paddleTwoY += paddleSpeed;
+                else if(paddleTwoY+paddleH/2.0 > hardBotTarget) paddleTwoY -= paddleSpeed;
+            }
+        }
+
+        //PvP
+        if(gameState == 4){
+            if(ballX < 0)   gameState = 8;
+            if(w-1 < ballX) gameState = 7;
         }
         
         render(gameState, paused, w, h, ballX, ballY, paddleOneY, paddleTwoY, paddleH);
