@@ -271,7 +271,7 @@ int main(){
             if(ballX < 0)   gameState = 6;
             if(w-1 < ballX) gameState = 5;
 
-            if(paddleTwoY+paddleH/2.0 < ballY && paddleTwoY+paddleH < h)      paddleTwoY += paddleSpeed;
+            if(paddleTwoY+paddleH/2.0 < ballY && paddleTwoY+paddleH < h-1)      paddleTwoY += paddleSpeed;
             else if(paddleTwoY+paddleH/2.0 > ballY && paddleTwoY > 0) paddleTwoY -= paddleSpeed;
             else;
         }
@@ -281,11 +281,11 @@ int main(){
             if(ballX < 0)   gameState = 6;
             if(w-1 < ballX) gameState = 5;
             if(90 <= angle && angle <= 270){
-                if(paddleTwoY+paddleH/2.0 < h/2.0 && paddleTwoY+paddleH < h)      paddleTwoY += paddleSpeed;
+                if(paddleTwoY+paddleH/2.0 < h/2.0 && paddleTwoY+paddleH < h-1)      paddleTwoY += paddleSpeed;
                 else if(paddleTwoY+paddleH/2.0 > h/2.0 && paddleTwoY > 0) paddleTwoY -= paddleSpeed;
             }
             else{
-                if(paddleTwoY+paddleH/2.0 < hardBotTarget && paddleTwoY+paddleH < h)      paddleTwoY += paddleSpeed;
+                if(paddleTwoY+paddleH/2.0 < hardBotTarget && paddleTwoY+paddleH < h-1)      paddleTwoY += paddleSpeed;
                 else if(paddleTwoY+paddleH/2.0 > hardBotTarget && paddleTwoY > 0) paddleTwoY -= paddleSpeed;
             }
         }
