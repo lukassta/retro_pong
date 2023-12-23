@@ -182,27 +182,27 @@ int main(){
     restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
 
     while(true){
-        if(input == 112) paused = true;
-        if(input == 111) paused = false;
-        if(input == 113 && gameState != 0){
+        if(input == 'p') paused = true;
+        if(input == 'o') paused = false;
+        if(input == 'q' && gameState != 0){
             gameState = 0;
             continue;
         }
         if(gameState == 0){
             render(gameState, w, h);
-            if(input == 49){
+            if(input == '1'){
                 restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
                 gameState = 1;
             }
-            if(input == 50){
+            if(input == '2'){
                 restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
                 gameState = 2;
             }
-            if(input == 51){
+            if(input == '3'){
                 restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
                 gameState = 3;
             }
-            if(input == 52){
+            if(input == '4'){
                 restartGameData(&paused, w, h, &speed, &ballX, &ballY, paddleH, &paddleOneY, &paddleTwoY, &angle);
                 gameState = 4;
             }
@@ -220,8 +220,8 @@ int main(){
             continue;
         }
         
-        if(input == 100 && paddleOneY + paddleH <= h-1) paddleOneY += paddleSpeed;
-        if(input == 97  && paddleOneY >= 0) paddleOneY -= paddleSpeed;
+        if(input == 'a'  && paddleOneY >= 0) paddleOneY -= paddleSpeed;
+        if(input == 'd' && paddleOneY + paddleH <= h-1) paddleOneY += paddleSpeed;
 
         ballX+=cos(angle*3.14159/180)*speed;
         ballY+=sin(angle*3.14159/180)*speed;
