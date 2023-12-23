@@ -58,17 +58,17 @@ void render(int state, bool paused, int screenWidth, int screenHeight, float bal
 void render(int state, int screenWidth, int screenHeight){
     std::vector<std::string> graphics;
     if(state == 0) graphics = {
-        "            _____   ____  _   _  _____            ",
-        "           |  __ \\ / __ \\| \\ | |/ ____|           ",
-        "           | |__) | |  | |  \\| | |  __            ",
-        "           |  ___/| |  | | . ` | | |_ |           ",
-        "           | |    | |__| | |\\  | |__| |           ",
-        "           |_|     \\____/|_| \\_|\\_____|           ",
-        "                                                  ",
-        "  Esc-quit  1-training   2-PvE(easy)  3-PvE(hard) ",
-        " P1: A-up S-stop D-down    P2: J-up K-stop L-down ",
-        "      Q-exit to menu    P-pause    O-unpause      ",
-        "            U-updatea width and height            "};
+        "            _____   ____  _   _  _____          ",
+        "           |  __ \\ / __ \\| \\ | |/ ____|         ",
+        "           | |__) | |  | |  \\| | |  __          ",
+        "           |  ___/| |  | | . ` | | |_ |         ",
+        "           | |    | |__| | |\\  | |__| |         ",
+        "           |_|     \\____/|_| \\_|\\_____|         ",
+        "                                                ",
+        " Esc-quit  1-training   2-PvE(easy)  3-PvE(hard)",
+        "P1: A-up S-stop D-down    P2: J-up K-stop L-down",
+        "      Q-exit to menu    P-pause    O-unpause    ",
+        "            U-updatea width and height          "};
     else if(state == 5) graphics = {
         "__     ______  _    _    __          ______  _   _  ",
         "\\ \\   / / __ \\| |  | |   \\ \\        / / __ \\| \\ | | ",
@@ -139,7 +139,7 @@ void restartGameData(bool* paused, int w, int h, float* speed, float* ballX, flo
     *ballX = w/(float)2;
     *ballY = h/(float)2;
 
-    *speed = 0.1;
+    *speed = 0.15;
     *angle = 180;
 
     *paddleOneY = h/(float)2 - paddleH/(float)2;
@@ -170,12 +170,12 @@ int main(){
     float ballX, ballY;
     int angle;
     float speed;
-    float acceleration = 0.1;
+    float acceleration = 0.01;
 
     float paddleOneY, paddleTwoY;
     int paddleH = 5;
     
-    float paddleSpeed = 0.05;
+    float paddleSpeed = 0.1;
 
     float hardBotTarget = 0;
 
